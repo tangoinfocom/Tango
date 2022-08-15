@@ -218,7 +218,7 @@ def THR_meomery_push(manager_resources_on_cluster, manager_task_dict, manager_re
     We have deployed DCG in the central cluster of the simulation environment, 
     and here we give an example (SAC) to demonstrate how central scheduling is 
     implemented in the central master of a realistic cluster. For more information
-    about DCG's model, please refer to model_dcg.py。You can place a custom 
+    about DCG's model, please refer to model_dcg.py. You can place a custom 
     central scheduling policy at this function interface.
 """
 
