@@ -19,7 +19,7 @@ To install the dependencies, please execute the following command on the master 
 pip3 install -r requirements_master.txt
 ```
 
-And Execute the following command on the central master node:
+And execute the following command on the central master node:
 
 ```
 pip3 install -r requirements_central_master.txt
