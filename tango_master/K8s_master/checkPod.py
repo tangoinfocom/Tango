@@ -18,7 +18,7 @@ class Pod(object):
 
 def check_pod(target, target_node = "", defaultFindRuning = True):
 	index = 0
-	index_list =[]
+	index_list = []
 
 	grep_get_pod_str = 'kubectl get pod -o wide | grep ' + target
 	pods = os.popen(grep_get_pod_str).read()

@@ -45,8 +45,8 @@ def modify_buff_size():
 
 
 def ping(target_ip, num, size):
-    num = (str)(num)
-    size = (str)(size)
+    num = str(num)
+    size = str(size)
     val = os.popen('ping -c ' + num +  ' -s' + size +  ' '+target_ip).read()
     index_a = val.find('mdev = ',0)
     index_b = val.find('/', index_a) + 1
@@ -97,7 +97,7 @@ def getPodIDList(pod_list):
     for i in pod_list:
         podName = i.name
         # logger.info("i.name:" + str(i.name))  #"imagerecon-deployment1-random1627279122.4124093-7bbcc6b85fmbqn5"
-        pos1 = findSubStrIndex("-",podName,2)
+        pos1 = findSubStrIndex("-", podName, 2)
         pos2 = findSubStrIndex("-", podName, 3)
         ID = podName[(pos1+7):pos2]
         podID_list.append(ID)
@@ -132,11 +132,15 @@ def get_container_id():
 
 
 def changBandWidth(bandwidth):
-    os.popen('wondershaper ens18 ' + str(bandwidth) +' ' + str(bandwidth)).read()
-    
-    
+    os.popen('wondershaper ens18 ' + str(bandwidth) + ' ' + str(bandwidth)).read()
+
+
+def changDelay(delay):
+    os.popen('tc qdisc change dev eth18 root netem delay' + str(delay) + ' 10ms').read()
+
+
 def name_to_ip(master_name):
-    ip = "192.168.1"
+    ip = "192.168.1."
     for w in master_name:
         if w.isdigit():
             ip += w

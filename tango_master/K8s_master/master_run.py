@@ -533,6 +533,7 @@ def allocation_amount(num_people, amount):
     b = [a[i+1]-a[i] for i in range(num_people)]
     return b
 
+
 """
     ρ(·) is equipped with a random strategy which can also be changed to various priority policy as need.
 """

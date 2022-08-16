@@ -169,7 +169,7 @@ if __name__ == '__main__':
             P.cpu_affinity([3, 8])
 
         process_reward_get = multiprocessing.Process(target=task_reward_get,
-                                                     args=(reward_back_queue,))  # 接收已计算完成的reward
+                                                     args=(reward_back_queue,))
         process_reward_get.start()
         P = psutil.Process(process_reward_get.pid)
         P.cpu_affinity([1, 2])
@@ -198,7 +198,7 @@ if __name__ == '__main__':
 
         # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         """
-            CSV everything
+            Data logging
         """
         p0 = multiprocessing.Process(target=csv_collect_everthing, args=(
         manager_resources_on_each_node_dict, manager_resources_on_cluster, manager_task_dict, req_load_dict))
@@ -207,7 +207,6 @@ if __name__ == '__main__':
         P.cpu_affinity([3, 8])
         # print("P.nice():", P.nice())
         # P.nice(-10)
-        # print("AFTRER P.nice():", P.nice())
 
         # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         """

@@ -1,6 +1,6 @@
 import json
 import socket
-from tango_master.K8s_master.config.config_others import *
+from config.config_others import *
 CENTRAL_NODE_LC_LAYOUT_PORT = 9014
 
 def send_or():
@@ -15,6 +15,8 @@ def send_or():
         client.connect((edge_ip, CENTRAL_NODE_LC_LAYOUT_PORT))
         client.sendall(bytes(send_dict.encode('utf-8')))
         client.close()
+
+
 
 if __name__ == "__main__":
     send_or()

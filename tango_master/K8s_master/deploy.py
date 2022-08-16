@@ -12,6 +12,7 @@ from config.config_others import NAME, PATH
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
 def bind_name(v1, pod, node, namespace="default"):
     target = client.V1ObjectReference(api_version='v1', kind='Node', name=node)
     meta = client.V1ObjectMeta()

@@ -4,14 +4,13 @@ from ruamel import yaml
 import time
 import os
 from checkPod import check_pod
-from checkstatus import getNodeName
+from checkStatus import getNodeName
 import shutil
 import logging
+from config.config_others import NAME, PATH
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-NAME = []
-PATH = []
 
 
 def bind_name(v1, pod, node, namespace="default"):
@@ -31,11 +30,10 @@ def bind_name(v1, pod, node, namespace="default"):
 
 
 def yamlCreat(str_node_index, deploy_type):
-
     t1 = str(time.time())
     file_path = "/home/" + str(t1) + ".yaml"
     shutil.copyfile(PATH[deploy_type-1], file_path)
-    # print("PATH[deploy_type-1]:", PATH[deploy_type-1])
+
     node_selector = '"' + str_node_index + '"'
     yaml_selector = "        slave: " + node_selector
     with open(file_path, 'a') as f:
@@ -65,7 +63,7 @@ def deploy_with_node(name, deploy_type, nodeName, update_num):
             content = yaml.load(f, Loader=yaml.RoundTripLoader)
             for i in range(update_num):
                 t_time = time.time()
-                record_detailName = name + '-deployment' + str(deploy_type) + '-random' +  str(t_time)
+                record_detailName = name + '-deployment' + str(deploy_type) + '-random' + str(t_time)
                 content['metadata']['name'] = record_detailName
                 k8s_apps_v1 = client.AppsV1Api()
                 resp = k8s_apps_v1.create_namespaced_deployment(
@@ -82,7 +80,7 @@ def deploy_with_node(name, deploy_type, nodeName, update_num):
         for x in check_pod(record_detailName, "", False):
             # print(x)
             if record_detailName in str(x.name).strip() and str(x.status).strip() == "Running":
-                logger.info("POD HAS RUNNNING NOW!")
+                # logger.info("ONE POD IS RUNNNING NOW!")
                 has_running = True
                 return str(x.ip).strip()
                 # RETURN_IP = str(x.ip).strip()
@@ -108,6 +106,7 @@ def deploy(yaml_path, name, deploy_type):
             logger.info("Deployment created. status='%s'" % resp.metadata.name)
             logger.info("time:" + str(time.time() - t1))
     except Exception as e:
+        logger.error("deploy：{}".format(e))
         pass
 
 
@@ -132,12 +131,12 @@ def delete_anyway(service_type, num, target_node = ""):
                 os.popen('sudo kubectl delete deployment ' + deployment_list_str[i] + ' --grace-period=0')
         else:
             service_name = NAME[int(service_type)-1]
+
             pod_list = check_pod(service_name, target_node)
             for each in pod_list:
                 if num == 0:
                     break
                 else:
-                    # print("each:", each)
                     whole_pod_name = each.name
                     # print("whole_pod_name:", whole_pod_name)
                     the_third_time_pos = findSubStr_clark(whole_pod_name, "-", 3)
@@ -153,15 +152,14 @@ def delete_anyway(service_type, num, target_node = ""):
 def delete(deployment_name):
     try:
         total_str = os.popen('sudo kubectl delete deployment ' + deployment_name + ' --grace-period=0').read()
-
     except Exception as e:
-        logger.error("delete".format(e))
+        logger.error("delete：{}".format(e))
 
 
 def initDeleteAll():
     str_comd = "sudo kubectl get deployment | awk '{print $1}' | grep service | xargs kubectl delete deployment --grace-period=0"
-    total_str = os.popen(str_comd).read()
-    logger.info("ALL PODS IN DEFAULT NAMESPACE HAVE BEEN DELETE.")
+    os.popen(str_comd).read()
+    # logger.info("ALL PODS IN DEFAULT NAMESPACE HAVE BEEN DELETE.")
 
 
 def initDeployAll():
@@ -172,10 +170,10 @@ def initDeployAll():
 
 def init_BE():
     BE_CONTAINER_IP_DICT = {}
-    delete_anyway(0,-1)
+    delete_anyway(0, -1)
     nodeNameList = getNodeName()
     for node_name in nodeNameList:
-        ip = deploy_with_node(NAME[-1],0,node_name,1)
+        ip = deploy_with_node(NAME[-1], 0, node_name, 1)
         BE_CONTAINER_IP_DICT[node_name] = ip
     return BE_CONTAINER_IP_DICT
 
@@ -191,6 +189,5 @@ if __name__ == "__main__":
     # initDeleteAll()
     # initDeployAll()
     
-
     # deploy_with_node(PATH[0], NAME[0], 1)
 

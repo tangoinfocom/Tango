@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- 
 import os
+import re
 from dataclasses import dataclass
 import time
 
@@ -17,7 +18,7 @@ class Pod(object):
 
 def check_pod(target, target_node = "", defaultFindRuning = True):
 	index = 0
-	index_list =[]
+	index_list = []
 
 	grep_get_pod_str = 'kubectl get pod -o wide | grep ' + target
 	pods = os.popen(grep_get_pod_str).read()
@@ -93,8 +94,13 @@ def check_pod(target, target_node = "", defaultFindRuning = True):
 	return pod_list
 
 
+
 if __name__ == '__main__':
 	t_s = time.time()
-	podList = check_pod("service1", "node82")
-	print(podList)
-	print("耗时：", time.time() - t_s)
+	# podList = check_pod("service1", "node82")
+	podList = check_pod("service1")
+	for pod in podList:
+		print(pod.ip)
+	# print(len(check_pod("service1")))
+	# print(check_pod("service1"))
+	# print(podList)

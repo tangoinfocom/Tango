@@ -179,12 +179,9 @@ class A2C(nn.Module):
             value_losses.append(F.smooth_l1_loss(value, torch.tensor([R] * 10).to(self.device)))
 
         # take gradient steps
-
         with torch.autograd.set_detect_anomaly(True):
             # self.optimizers['a_optimizer'].zero_grad()
-            # print("policy_losses:", policy_losses)
             a_loss = torch.stack(policy_losses).sum()
-            # print("a_loss:", a_loss)
             a_loss.backward(retain_graph=True)
             self.optimizers['a_optimizer'].step()
 
