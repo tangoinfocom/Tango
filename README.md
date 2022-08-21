@@ -40,10 +40,10 @@ pip3 install -r requirements_central_master.txt
 
 - Trace: You can download the required data from the above Google trace.
 - Config setting: Please complete the container and YAML file first and set up in config file according to your own needs. We have given some examples of settings.
-- Run:  
+- Run in the following order:  
+    - worker node -> `worker_run.py`
     - central master node -> `main_central.py`
     - master node -> `master_run.py`
-    - worker node -> `worker_run.py`
     - req_generator -> `reqGenerator_run.py`
 - Observe: We have provided some observation interfaces in the main script.
 
