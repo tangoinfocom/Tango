@@ -43,7 +43,7 @@ pip3 install -r requirements_central_master.txt
 - Run in the following order:  
     - worker node -> `worker_run.py`
     - central master node -> `main_central.py`
-    - master node -> `master_run.py`
+    - master node -> `master_run.py` and `init_deploy_lc.py`
     - req_generator -> `reqGenerator_run.py`
 - Observe: We have provided some observation interfaces in the main script.
 
